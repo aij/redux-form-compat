@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Fields, reduxForm as reduxForm6 } from 'redux-form';
-import { fromPairs, get } from 'lodash';
+import { get, set } from 'lodash';
 
 const FormWrapper = ({ extraProps, fieldNames, WrappedComponent, ...rest }) => {
-  const fieldPairs = fieldNames.map(n => {
+  const fields = {};
+  fieldNames.forEach(n => {
     const { input, meta } = get(rest, n);
-    return [n, { ...input, ...meta }];
+    set(fields, n, { ...input, ...meta });
   });
-  const fields = fromPairs(fieldPairs);
   return <WrappedComponent {...{ ...rest, ...extraProps }} fields={fields}/>;
 };
 
