@@ -6,7 +6,7 @@ import { get, set } from 'lodash';
 const FormWrapper = ({ extraProps, fieldNames, WrappedComponent, ...rest }) => {
   const fields = {};
   fieldNames.forEach(n => {
-    const { input, meta } = get(rest, n);
+    const { input, meta } = get(rest, n, {});
     set(fields, n, { ...input, ...meta });
   });
   return <WrappedComponent {...{ ...rest, ...extraProps }} fields={fields}/>;
@@ -21,9 +21,16 @@ const ReduxFormCompat = (config, WrappedComponent) => props => {
     />;
 };
 
+// Default config options to more closely match v5.
+export const defaultConfig = {
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true,
+};
 
 export const reduxForm = (config, mapStateToProps, mapDispatchToProps, mergeProps, options) => WrappedComponent => {
   return connect(mapStateToProps, mapDispatchToProps, mergeProps, options)(
-    reduxForm6(config)(ReduxFormCompat(config, WrappedComponent))
+    reduxForm6({...defaultConfig, ...config})(
+      ReduxFormCompat(config, WrappedComponent)
+    )
   );
 };
