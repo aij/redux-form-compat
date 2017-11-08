@@ -12,13 +12,17 @@ const FormWrapper = ({ extraProps, fieldNames, WrappedComponent, ...rest }) => {
   return <WrappedComponent {...{ ...rest, ...extraProps }} fields={fields}/>;
 };
 
-const ReduxFormCompat = (config, WrappedComponent) => props => {
-  const fieldNames = props.fields || config.fields;
-  return <Fields
-    names={fieldNames}
-    component={FormWrapper}
-    props={{ extraProps: props, fieldNames, WrappedComponent }}
+const ReduxFormCompat = (config, WrappedComponent) => {
+  const c = props => {
+    const fieldNames = props.fields || config.fields;
+    return <Fields
+      names={fieldNames}
+      component={FormWrapper}
+      props={{ extraProps: props, fieldNames, WrappedComponent }}
     />;
+  };
+  c.displayName = 'ReduxFormCompat';
+  return c;
 };
 
 // Default config options to more closely match v5.
