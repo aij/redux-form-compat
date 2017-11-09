@@ -1,0 +1,56 @@
+{
+  "name": "redux-form-compat",
+  "version": "0.1.0",
+  "description": "Redux Form v5 migration shim",
+  "repository": "https://github.com/aij/redux-form-compat",
+  "author": "Ivan Jager <aij+git@mrph.org>",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "reactjs",
+    "redux",
+    "react-redux",
+    "redux-form",
+    "form",
+    "decorator",
+    "v5",
+    "v6",
+    "v7"
+  ],
+  "main": "./lib/index.js",
+  "module": "./es/index.js",
+  "jsnext:main": "./es/index.js",
+  "files": [
+    "README.md",
+    "es",
+    "lib"
+  ],
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "cross-env": "^5.1.1",
+    "eslint": "^4.10.0",
+    "eslint-plugin-react": "^7.4.0",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-form": "^7.1.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
+  "peerDependencies": {
+    "react-redux": ">= 4.4.5",
+    "redux-form": "^7.1.2"
+  },
+  "scripts": {
+    "build": "npm run build:lib && npm run build:es && npm run lint",
+    "build:lib": "babel src --out-dir lib",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
+    "clean": "rimraf dist lib es",
+    "lint": "eslint src",
+    "prepublish": "npm run build"
+  }
+}
