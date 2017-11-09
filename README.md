@@ -19,9 +19,9 @@ The inversion of control can now be deferred on a form-by-form basis, relieving 
 1. Upgrade `redux-form` to the latest version (7.1.2 was tested).
 1. Replace `import { reduxForm } from 'redux-form'` with `import { reduxForm } from 'redux-form-compat'`.
 1. Follow the other steps in the [migration guide](https://redux-form.com/7.1.2/docs/migrationguide.md/).
-  1. `handleSubmit`/`onSubmit` should throw `SubmissionError`.
-  1. Convert field arrays to use `FieldArray`.
-  1. If normalization is used, those fields will need to be converted to either avoid normalization or use the new normalization.
+    1. `handleSubmit`/`onSubmit` should throw `SubmissionError`.
+    1. Convert field arrays to use `FieldArray`.
+    1. If normalization is used, those fields will need to be converted to either avoid normalization or use the new normalization.
 
 Undocumented differences found when upgrading from redux-form 5.3.6 to 7.1.2:
 
