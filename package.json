@@ -1,6 +1,6 @@
 {
   "name": "redux-form-compat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Redux Form v5 migration shim",
   "repository": "https://github.com/aij/redux-form-compat",
   "author": "Ivan Jager <aij+git@mrph.org>",
