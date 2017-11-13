@@ -7,13 +7,53 @@ import { get, set } from 'lodash';
 import type { ComponentType } from 'react';
 import type { Config } from 'redux-form/lib/createReduxForm';
 
-export type CompatConfig = Config & { fields: {} };
+type FieldPropStyle =
+  | 'v5' // active, autoFill, autoFilled?, checked?, dirty, error?, initialValue, etc.
+  | 'v6' // input, meta
+  | 'v5v6'; // all of the above
 
-const FormWrapper = ({ extraProps, fieldNames, WrappedComponent, ...rest }) => {
+export type CompatConfig = Config & {
+  fields: {},
+  fieldPropStyle?: FieldPropStyle,
+};
+
+// From https://github.com/erikras/redux-form/blob/v5.3.6/src/isChecked.js
+const isChecked = value => {
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  if (typeof value === 'string') {
+    const lower = value.toLowerCase();
+    if (lower === 'true') {
+      return true;
+    }
+    if (lower === 'false') {
+      return false;
+    }
+  }
+  return undefined;
+};
+
+const FormWrapper = ({
+  extraProps,
+  fieldNames,
+  fieldPropStyle,
+  WrappedComponent,
+  ...rest
+}) => {
   const fields = {};
   fieldNames.forEach(n => {
-    const { input, meta } = get(rest, n, {});
-    set(fields, n, { ...input, ...meta });
+    const fprops = get(rest, n, { input: {} });
+    const v5props = fieldPropStyle.startsWith('v5')
+      ? {
+          ...fprops.input,
+          ...fprops.meta,
+          // Workaround for https://github.com/erikras/redux-form/issues/2512
+          checked: isChecked(fprops.input.value),
+        }
+      : undefined;
+    const v6props = fieldPropStyle.endsWith('v6') ? fprops : undefined;
+    set(fields, n, { ...v5props, ...v6props });
   });
   return <WrappedComponent {...{ ...rest, ...extraProps }} fields={fields} />;
 };
@@ -25,7 +65,12 @@ const ReduxFormCompat = (config, WrappedComponent) => {
       <Fields
         names={fieldNames}
         component={FormWrapper}
-        props={{ extraProps: props, fieldNames, WrappedComponent }}
+        props={{
+          extraProps: props,
+          fieldNames,
+          fieldPropStyle: config.fieldPropStyle,
+          WrappedComponent,
+        }}
       />
     );
   };
@@ -37,6 +82,7 @@ const ReduxFormCompat = (config, WrappedComponent) => {
 export const defaultConfig: Config = {
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
+  fieldPropStyle: 'v5',
 };
 
 export const reduxForm = (
@@ -46,9 +92,8 @@ export const reduxForm = (
   mergeProps?: mixed => mixed,
   options?: mixed
 ) => (WrappedComponent: ComponentType<*>) => {
+  const mconfig = { ...defaultConfig, ...config };
   return connect(mapStateToProps, mapDispatchToProps, mergeProps, options)(
-    reduxForm6({ ...defaultConfig, ...config })(
-      ReduxFormCompat(config, WrappedComponent)
-    )
+    reduxForm6(mconfig)(ReduxFormCompat(mconfig, WrappedComponent))
   );
 };
