@@ -34,6 +34,28 @@ const isChecked = value => {
   return undefined;
 };
 
+const mapV5FieldProps = ({ input, meta }) => ({
+  ...input,
+  active: meta.active,
+  asyncValidating: meta.asyncValidating,
+  autofilled: meta.autofilled,
+  // Workaround for https://github.com/erikras/redux-form/issues/2512
+  checked: isChecked(input.value),
+  dirty: meta.dirty,
+  //dispatch: meta.dispatch,
+  error: meta.error,
+  //form: meta.form,
+  initialValue: meta.initial,
+  invalid: meta.invalid,
+  pristine: meta.pristine,
+  //submitFailed: meta.submitFailed,
+  //submitting: meta.submitting,
+  touched: meta.touched,
+  valid: meta.valid,
+  visited: meta.visited,
+  //warning: meta.warning,
+});
+
 const FormWrapper = ({
   extraProps,
   fieldNames,
@@ -45,12 +67,7 @@ const FormWrapper = ({
   fieldNames.forEach(n => {
     const fprops = get(rest, n, { input: {} });
     const v5props = fieldPropStyle.startsWith('v5')
-      ? {
-          ...fprops.input,
-          ...fprops.meta,
-          // Workaround for https://github.com/erikras/redux-form/issues/2512
-          checked: isChecked(fprops.input.value),
-        }
+      ? mapV5FieldProps(fprops)
       : undefined;
     const v6props = fieldPropStyle.endsWith('v6') ? fprops : undefined;
     set(fields, n, { ...v5props, ...v6props });
