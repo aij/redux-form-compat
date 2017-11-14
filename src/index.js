@@ -56,23 +56,38 @@ const mapV5FieldProps = ({ input, meta }) => ({
   //warning: meta.warning,
 });
 
-const FormWrapper = ({
-  extraProps,
-  fieldNames,
-  fieldPropStyle,
-  WrappedComponent,
-  ...rest
-}) => {
+const mapFieldsProps = (fieldPropStyle, fieldNames, props) => {
   const fields = {};
   fieldNames.forEach(n => {
-    const fprops = get(rest, n, { input: {} });
+    const fprops = get(props, n, { input: {} });
     const v5props = fieldPropStyle.startsWith('v5')
       ? mapV5FieldProps(fprops)
       : undefined;
     const v6props = fieldPropStyle.endsWith('v6') ? fprops : undefined;
     set(fields, n, { ...v5props, ...v6props });
   });
-  return <WrappedComponent {...{ ...rest, ...extraProps }} fields={fields} />;
+  return fields;
+};
+
+const mapFormProps = props => ({
+  // New prop names should be reasonably safe to pass though...
+  ...props,
+  // Old prop names for compatibility:
+  destroyForm: props.destroy,
+  initializeForm: props.initialize,
+  resetForm: props.reset,
+});
+
+const FormWrapper = ({
+  extraProps,
+  fieldNames,
+  fieldPropStyle,
+  WrappedComponent,
+  ...fieldsProps
+}) => {
+  const fields = mapFieldsProps(fieldPropStyle, fieldNames, fieldsProps);
+  const formProps = mapFormProps(extraProps);
+  return <WrappedComponent {...formProps} fields={fields} />;
 };
 
 const ReduxFormCompat = (config, WrappedComponent) => {
