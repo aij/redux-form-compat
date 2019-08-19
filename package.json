@@ -1,6 +1,6 @@
 {
   "name": "redux-form-compat",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Redux Form v5 migration shim",
   "repository": "https://github.com/aij/redux-form-compat",
   "author": "Ivan Jager <aij+git@mrph.org>",
@@ -27,23 +27,23 @@
   ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.0.2",
-    "babel-preset-env": "^1.6.1",
+    "babel-eslint": "^10.0.2",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
-    "cross-env": "^5.1.1",
-    "eslint": "^4.10.0",
-    "eslint-plugin-react": "^7.4.0",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2",
-    "redux-form": "^7.1.2"
+    "cross-env": "^5.2.0",
+    "eslint": "^6.2.0",
+    "eslint-plugin-react": "^7.14.3",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.4",
+    "redux-form": "^8.2.6"
   },
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.15"
   },
   "peerDependencies": {
     "react-redux": ">= 4.4.5",
-    "redux-form": "^7.1.2"
+    "redux-form": ">= 7.1.2"
   },
   "scripts": {
     "build": "npm run build:lib && npm run build:es && npm run lint",
