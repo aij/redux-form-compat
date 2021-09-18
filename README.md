@@ -1,3 +1,13 @@
+# EOL
+
+This package is currently unmaintained, and was only meant to be used on a temporary basis in the first place.
+I am no longer using or maintaining this package, and I hope that you are no longer using it either. 
+
+If you are still using this, I recommend upgrading your code to use the newer Redux APIs directly.
+See the [Further migration steps section](#further-migration-steps) below for more detail.
+
+If for whatever reason you think this package is still useful and worth your time to maintain, please reach out to me.
+
 # Purpose
 
 Redux Form v6 was a [major departure](https://redux-form.com/7.1.2/docs/migrationguide.md/#inversion-of-control) from previous versions. A direct upgrade
@@ -30,6 +40,7 @@ Undocumented differences found when upgrading from redux-form 5.3.6 to 7.1.2:
    objects when none of the nested fields have values.
  * The `checked` prop is no longer passed for boolean values, despite [documentation to the contrary](https://redux-form.com/7.1.2/docs/api/field.md/#-code-input-checked-boolean-code-optional-). In v5, the `checked` prop was [always](https://github.com/erikras/redux-form/blob/v5.3.6/src/isChecked.js) passed, with a value of `true`, `false`, or `undefined`.
  * `onChange` no longer [magically unwraps](https://github.com/erikras/redux-form/commit/d33ca58b4c14ac82a5230aa916191a07ee43f127) objects that have a `.value` field.
+
 ## Further migration steps:
 
 These can be done at your leisure and don't need to be applied to the whole project at once.
